@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Worker Template</title>
+   	<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="script.js"></script>
+  </head>
+  <body>
+    <h1 id="title1">Title box</h1>
+    <h2 id="title2">0</h2>
+    <h3 id="title3">Worker speed: Fast!</h3>
+    <input type="range" min="1" max="10" value="1" name="speed" id="speedSlider">
+    <button type="button" id="btn" disabled>Press</button>
+
+    <script id="worker">
+      var x = 0;
+      var speed = 1;
+      
+      function loop(data) {
+        data.num++;
+        x = data.num;
+        postMessage(data.num);
+        setTimeout(function() {
+          loop(data);
+        }, speed * 20);
+      }
+      
+      self.addEventListener('message', function(e){
+        switch(e.data.cmd){
+          case 'start':{
+            speed = e.data.speed;
+            loop(e.data);
+            break;
+          }
+          case 'stop':{
+            postMessage(x);
+            self.close();
+            break;
+          }
+          case 'updateSpeed':{
+            speed = e.data.speed;
+            break;
+          }
+          default:{
+            postMessage("default");
+            break;
+          }
+        }
+        
+      }, false);
+    </script>
+
+</body>
+</html>
