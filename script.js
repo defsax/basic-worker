@@ -46,8 +46,8 @@ window.onload = () => {
     } else {
       useWorker = false;
       worker.postMessage({ cmd: "stop" });
-      //worker.terminate();
-      worker = undefined;
+      //worker.terminate(); //removed since worker terminates itself using self.close()
+      worker = undefined; //reset worker
     }
   }
 
