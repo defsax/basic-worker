@@ -1,9 +1,9 @@
 <html>
   <head>
     <title>Worker Template</title>
-   	<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="script.js"></script>
+    <meta charset="UTF-8">
+   	<meta name="viewport" content="width=device-width, initial-scale=1">
+   	<script src="script.js"></script>
   </head>
   <body>
     <h1 id="title1">Title box</h1>
@@ -14,7 +14,7 @@
 
     <script id="worker">
       var x = 0;
-      var speed = 1;
+      var speed;
       
       function loop(data) {
         data.num++;
@@ -22,13 +22,13 @@
         postMessage(data.num);
         setTimeout(function() {
           loop(data);
-        }, speed * 20);
+        }, speed);
       }
       
       self.addEventListener('message', function(e){
         switch(e.data.cmd){
           case 'start':{
-            speed = e.data.speed;
+            speed = Math.pow(e.data.speed, 2) * 10;
             loop(e.data);
             break;
           }
@@ -38,7 +38,7 @@
             break;
           }
           case 'updateSpeed':{
-            speed = e.data.speed;
+            speed = Math.pow(e.data.speed, 2) * 10;
             break;
           }
           default:{
@@ -49,6 +49,5 @@
         
       }, false);
     </script>
-
 </body>
 </html>

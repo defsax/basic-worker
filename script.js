@@ -5,29 +5,8 @@ window.onload = () => {
   rangeInput.value = 1;
   buttonID.disabled = false;
   btn.addEventListener("click", toggle);
+  rangeInput.addEventListener("mouseup", updateSpeed);
   sessionStorage.clear();
-  
-  rangeInput.addEventListener("change", function() {
-    switch(rangeInput.value){
-      case '1':{
-        document.getElementById("title3").innerHTML = "Worker speed: Fast!";
-        break;
-      }
-      case '10':{
-        document.getElementById("title3").innerHTML = "Worker speed: Slow...";
-        break;
-      }
-      default:{
-        document.getElementById("title3").innerHTML = "Worker speed: " + rangeInput.value;
-        break;
-      }
-    }
-    
-    if(useWorker != false){
-      worker.postMessage({cmd: "updateSpeed", speed: rangeInput.value});
-      console.log("Slider = " + rangeInput.value);
-    }
-  }, false);
 
   var worker;
   let useWorker = false;
@@ -37,7 +16,7 @@ window.onload = () => {
   var workerData = new Blob([document.getElementById("worker").textContent], {
     type: "application/javascript"
   });
-
+  
   function toggle() {
     if (typeof(worker) == "undefined") {
       useWorker = true;
@@ -84,4 +63,30 @@ window.onload = () => {
       speed: rangeInput.value
     });
   }
+  
+  function updateSpeed() {
+    switch(rangeInput.value){
+      case '1':{
+        document.getElementById("title3").innerHTML = "Worker speed: Fast!";
+        break;
+      }
+      case '10':{
+        document.getElementById("title3").innerHTML = "Worker speed: Slow...";
+        break;
+      }
+      default:{
+        document.getElementById("title3").innerHTML = "Worker speed: " + rangeInput.value;
+        break;
+      }
+    }
+    
+    if(useWorker != false){
+      worker.postMessage({cmd: "updateSpeed", speed: rangeInput.value});
+      console.log("Slider = " + rangeInput.value);
+    }
+  }
+  
+  rangeInput.oninput = function(){
+		document.getElementById("title3").innerHTML = "Worker speed: " + this.value;
+	}
 };
