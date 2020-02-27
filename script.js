@@ -87,6 +87,6 @@ window.onload = () => {
   }
   
   rangeInput.oninput = function(){
-		document.getElementById("title3").innerHTML = "Worker speed: " + this.value;
-	}
+    document.getElementById("title3").innerHTML = "Worker speed: " + this.value;
+  }
 };
