@@ -5,7 +5,6 @@ window.onload = () => {
   rangeInput.value = 1;
   buttonID.disabled = false;
   btn.addEventListener("click", toggle);
-  rangeInput.addEventListener("mouseup", updateSpeed);
   sessionStorage.clear();
 
   var worker;
@@ -64,7 +63,9 @@ window.onload = () => {
     });
   }
   
-  function updateSpeed() {
+  rangeInput.oninput = function(){
+    document.getElementById("title3").innerHTML = "Worker speed: " + this.value;
+    
     switch(rangeInput.value){
       case '1':{
         document.getElementById("title3").innerHTML = "Worker speed: Fast!";
@@ -79,14 +80,10 @@ window.onload = () => {
         break;
       }
     }
-    
+   
     if(useWorker != false){
       worker.postMessage({cmd: "updateSpeed", speed: rangeInput.value});
       console.log("Slider = " + rangeInput.value);
     }
-  }
-  
-  rangeInput.oninput = function(){
-    document.getElementById("title3").innerHTML = "Worker speed: " + this.value;
   }
 };
